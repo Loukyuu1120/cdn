@@ -1,4 +1,4 @@
-![colorless](https://cdn.jsdelivr.net/gh/Loukyuu1120/alistwebcdn/imgs/img_pid_83088427_anmi.jpg)
+![colorless](https://cdn.jsdelivr.net/gh/Loukyuu1120/cdn/imgs/img_pid_83088427_anmi.jpg)
 
 ------
 
