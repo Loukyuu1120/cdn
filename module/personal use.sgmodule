@@ -64,8 +64,6 @@ B站解锁HD = type=http-response,pattern=https:\/\/ap(p|i)\.bilibili\.com\/((pg
 <<<<<<< HEAD
 # 流媒体解锁检测
 stream-all = type=generic, timeout=15, script-path=https://raw.githubusercontent.com/LucaLin233/Luca_Conf/main/Surge/JS/stream-all.js
-=======
->>>>>>> 459aedeb5e23e1fa62e6a91e559e08b336c4efa8
 
 [MITM]
 hostname = %APPEND% wmapi.meituan.com, fmapp.chinafamilymart.com.cn, greasyfork.org, openuserjs.org, 8.8.8.8, 1.1.1.1,  api.m.jd.com, api.weibo.cn, mapi.weibo.com, *.uve.weibo.com, mp.weixin.qq.com, www.zhihu.com, api.zhihu.com, link.zhihu.com, 118.89.204.198, ap*.bilibili.com, api.live.bilibili.com, api.vc.bilibili.com, *.amemv.com, aweme*.snssdk.com, biz.caiyunapp.com, spclient.wg.spotify.com
