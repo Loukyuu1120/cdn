@@ -1,9 +1,6 @@
 #!name=Loukyuu
 #!desc=Personal use
 #!system=ios
-[Panel]
-# 流媒体解锁检测
-stream-all = script-name=stream-all, title="流媒体解锁检测", content="请刷新面板", update-interval=-1
 [General]
 # > 优酷 去广告
 force-http-engine-hosts = %APPEND% vali.cp31.ott.cibntv.net
@@ -61,8 +58,6 @@ B站解锁HD = type=http-response,pattern=https:\/\/ap(p|i)\.bilibili\.com\/((pg
 # > WPS (By eHpo)
 # 彩云天气
 彩云天气 = type=http-response,pattern=https?:\/\/biz\.caiyunapp\.com\/(membership_rights|v2\/user),requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/JQWS/GuangZhuiQuanX/main/rewrite/caiyun/caiyun_svip.js
-# 流媒体解锁检测
-stream-all = type=generic, timeout=15, script-path=https://raw.githubusercontent.com/LucaLin233/Luca_Conf/main/Surge/JS/stream-all.js
 
 [MITM]
 hostname = %APPEND% wmapi.meituan.com, fmapp.chinafamilymart.com.cn, greasyfork.org, openuserjs.org, 8.8.8.8, 1.1.1.1,  api.m.jd.com, api.weibo.cn, mapi.weibo.com, *.uve.weibo.com, mp.weixin.qq.com, www.zhihu.com, api.zhihu.com, link.zhihu.com, 118.89.204.198, ap*.bilibili.com, api.live.bilibili.com, api.vc.bilibili.com, *.amemv.com, aweme*.snssdk.com, biz.caiyunapp.com, spclient.wg.spotify.com
