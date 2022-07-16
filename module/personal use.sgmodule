@@ -52,12 +52,6 @@ douyin_ad = type=http-response,pattern=^https?:\/\/aweme\.snssdk\.com\/aweme\/v1
 WeChat.js = script-path=https://raw.githubusercontent.com/NobyDa/Script/master/QuantumultX/File/Wechat.js,type=http-request,pattern=^https://mp\.weixin\.qq\.com/mp/getappmsgad
 # 哔哩哔哩动画 精简去广告 (By @Kaya)
 B站解锁HD = type=http-response,pattern=https:\/\/ap(p|i)\.bilibili\.com\/((pgc\/player\/api\/playurl)|(x\/v2\/account\/myinfo\?)|(x\/v2\/account/mine\?)),requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/JQWS/GuangZhuiQuanX/main/rewrite/bilibili/BiliHD.js
-# > NobyDa
-# > 爱美剧Vip (by huihui）(官网：app.meiju2018.com)
-# > 看漫画极速版vip (By HoGer)
-# > WPS (By eHpo)
-# 彩云天气
-彩云天气 = #type=http-response,pattern=https?:\/\/biz\.caiyunapp\.com\/(membership_rights|v2\/user),requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/JQWS/GuangZhuiQuanX/main/rewrite/caiyun/caiyun_svip.js
 
 [MITM]
 hostname = %APPEND% wmapi.meituan.com, fmapp.chinafamilymart.com.cn, greasyfork.org, openuserjs.org, 8.8.8.8, 1.1.1.1,  api.m.jd.com, api.weibo.cn, mapi.weibo.com, *.uve.weibo.com, mp.weixin.qq.com, www.zhihu.com, api.zhihu.com, link.zhihu.com, 118.89.204.198, ap*.bilibili.com, api.live.bilibili.com, api.vc.bilibili.com, *.amemv.com, aweme*.snssdk.com, biz.caiyunapp.com, spclient.wg.spotify.com
