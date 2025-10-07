@@ -1,0 +1,9 @@
+[Script]
+http-response ^https:\/\/(api\.revenuecat\.com|api\.rc-backup\.com)\/.+\/(receipts$|subscribers\/[^/]+$) script-path=https://raw.githubusercontent.com/Yu9191/Rewrite/main/Revenuecat.js
+
+http-request ^https:\/\/(api\.revenuecat\.com|api\.rc-backup\.com)\/.+\/(receipts$|subscribers\/[^/]+$) script-path=https://raw.githubusercontent.com/Yu9191/Rewrite/main/Revenuecat.js
+
+url ^https:\/\/api\.lianjiu\.fun\/app\/api\/v1\/profile$ reject
+
+[MITM]
+hostname = %APPEND% api.revenuecat.com, api.lianjiu.fun
