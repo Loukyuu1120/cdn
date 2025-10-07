@@ -1,8 +1,8 @@
 /*
-QQ 跳转解码模块（增强版）
+QQ 跳转解码模块（增强选择版）
 适用：Surge / Loon / Quantumult X
 功能：自动提取 c.pc.qq.com、pingtas.qq.com、connect.qq.com 等跳转真实目标链接
-特性：自动识别并优先在默认浏览器打开，兼容 Chrome / Firefox / Edge / Opera，支持 iOS scheme
+特性：手动选择在指定浏览器或默认浏览器中打开，兼容 Chrome / Firefox / Edge 等，支持 iOS scheme
 */
 
 function deepDecode(url, maxDepth = 10) {
@@ -64,7 +64,7 @@ if (target) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>跳转到浏览器</title>
+<title>选择浏览器</title>
 <style>
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -87,19 +87,6 @@ body {
     max-width: 90%;
     width: 400px;
 }
-.loading {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(255,255,255,.3);
-    border-radius: 50%;
-    border-top-color: #fff;
-    animation: spin 1s ease-in-out infinite;
-    margin-right: 10px;
-}
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
 .url {
     background: rgba(0,0,0,0.2);
     padding: 10px;
@@ -109,36 +96,46 @@ body {
     font-size: 14px;
     text-align: left;
 }
+.button-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 25px;
+}
 .btn {
     background: white;
     color: #667eea;
     border: none;
-    padding: 12px 30px;
+    padding: 12px 20px;
     border-radius: 25px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    margin: 10px 5px;
-    transition: transform 0.2s;
+    transition: transform 0.2s, background-color 0.2s;
 }
 .btn:hover { transform: translateY(-2px); }
+.btn.full-width {
+    grid-column: 1 / -1;
+}
 .disabled {
     opacity: 0.6;
     cursor: not-allowed;
+    background-color: #eee !important;
+    color: #888 !important;
 }
 </style>
 </head>
 <body>
 <div class="container">
-    <h2>🚀 即将跳转到浏览器</h2>
-    <p>该页面将在QQ外部打开</p>
+    <h2>🔗 选择操作</h2>
+    <p>请选择一个浏览器打开下面的链接</p>
     <div class="url">${finalUrl}</div>
-    <div style="margin: 20px 0;">
-        <span class="loading"></span><span id="status">正在跳转...</span>
-    </div>
-    <div>
-        <button id="openBtn" class="btn" onclick="openInBrowser()">立即打开</button>
-        <button class="btn" onclick="copyUrl()">复制链接</button>
+    <div class="button-grid">
+        <button class="btn" onclick="openDefault(this)">默认浏览器</button>
+        <button class="btn" onclick="openChrome(this)">Chrome</button>
+        <button class="btn" onclick="openFirefox(this)">Firefox</button>
+        <button class="btn" onclick="openEdge(this)">Edge</button>
+        <button class="btn full-width" onclick="copyUrl()">复制链接</button>
     </div>
 </div>
 
@@ -146,10 +143,6 @@ body {
 const finalUrl = ${JSON.stringify(finalUrl)};
 const stripped = ${JSON.stringify(stripped)};
 const isHttps = ${isHttps};
-
-let alreadyOpened = false;
-
-setTimeout(() => openInBrowser(), 1200);
 
 function tryOpenHref(url) {
     const a = document.createElement('a');
@@ -161,40 +154,35 @@ function tryOpenHref(url) {
     document.body.removeChild(a);
 }
 
-function openInBrowser() {
-    if (alreadyOpened) return;
-    alreadyOpened = true;
-
-    const openBtn = document.getElementById('openBtn');
-    const status = document.getElementById('status');
-    if (openBtn) {
-        openBtn.classList.add('disabled');
-        openBtn.textContent = '已尝试打开';
+function postOpenAttempt(btn) {
+    if (btn) {
+        btn.classList.add('disabled');
+        btn.textContent = '已尝试打开';
     }
-    if (status) status.textContent = '已尝试在外部浏览器打开';
+}
 
-    // 默认优先：直接打开系统浏览器
+function openDefault(btn) {
     tryOpenHref(finalUrl);
+    postOpenAttempt(btn);
+}
 
-    // 延迟再尝试特定浏览器 scheme
-    setTimeout(() => {
-        const schemes = [
-            isHttps ? 'googlechromes://' + stripped : 'googlechrome://' + stripped,
-            'firefox://open-url?url=' + encodeURIComponent(finalUrl),
-            'microsoft-edge-' + finalUrl,
-            'edgemobile://' + stripped,
-            'opera-http://' + stripped,
-            finalUrl
-        ];
+function openChrome(btn) {
+    const scheme = isHttps ? 'googlechromes://' + stripped : 'googlechrome://' + stripped;
+    tryOpenHref(scheme);
+    postOpenAttempt(btn);
+}
 
-        let idx = 0;
-        function attemptNext() {
-            if (idx >= schemes.length) return;
-            tryOpenHref(schemes[idx++]);
-            setTimeout(attemptNext, 300);
-        }
-        attemptNext();
-    }, 500);
+function openFirefox(btn) {
+    const scheme = 'firefox://open-url?url=' + encodeURIComponent(finalUrl);
+    tryOpenHref(scheme);
+    postOpenAttempt(btn);
+}
+
+function openEdge(btn) {
+    // 尝试两种 scheme，桌面版和移动版
+    tryOpenHref('microsoft-edge-' + finalUrl);
+    setTimeout(() => tryOpenHref('edgemobile://' + stripped), 200);
+    postOpenAttempt(btn);
 }
 
 function copyUrl() {
