@@ -177,7 +177,7 @@ window.addEventListener('load', () => {
 
 // ✅ Safari 打开（用户手动点击时触发）
 function openSafari(btn) {
-    const scheme = 'x-web-search://?' + encodeURIComponent(finalUrl);
+    const scheme = 'com-apple-mobilesafari-tab:' + finalUrl;
     tryOpenHref(scheme);
     postOpenAttempt(btn);
 }
