@@ -168,21 +168,8 @@ function postOpenAttempt(btn) {
     }
 }
 
-/**
- * [修改] 此函数增加了对 iOS 的特殊处理
- */
 function openDefault(btn) {
-    if (isIOS()) {
-        const jumpUrl = `mqqapi://forward/url?url_prefix=${encodeURIComponent(finalUrl)}`;
-        const iframe = document.createElement("iframe");
-        iframe.style.display = "none";
-        iframe.src = jumpUrl;
-        document.body.appendChild(iframe);
-        setTimeout(() => document.body.removeChild(iframe), 2000);
-    } else {
-        tryOpenHref(finalUrl);
-    }
-
+    location.href = finalUrl;
     postOpenAttempt(btn);
 }
 
