@@ -4,7 +4,7 @@ QQ 跳转解码模块
 功能：自动提取 c.pc.qq.com、pingtas.qq.com、connect.qq.com 等跳转真实目标链接
 */
 
-function deepDecode(url, maxDepth = 5) {
+function deepDecode(url, maxDepth = 10) {
     let prev = url, i = 0;
     while (i < maxDepth) {
         try {
@@ -19,25 +19,52 @@ function deepDecode(url, maxDepth = 5) {
     return prev;
 }
 
-const requestUrl = $request.url;
-const urlMatch = requestUrl.match(/[?&]pfurl=([^&]+)/i);
+function extractTargetUrl(rawUrl) {
+    let decoded = deepDecode(rawUrl);
 
-if (urlMatch && urlMatch[1]) {
-    let rawUrl = urlMatch[1];
-    let decodedUrl = deepDecode(rawUrl).trim();
-
-    if (!/^https?:\/\//i.test(decodedUrl)) {
-        decodedUrl = "https://" + decodedUrl.replace(/^\/+/, "");
+    const pfMatch = decoded.match(/[?&]pfurl=([^&]+)/i);
+    if (pfMatch && pfMatch[1]) {
+        return deepDecode(pfMatch[1]);
     }
 
-    decodedUrl = decodedUrl.replace(/(%2f|\/)+$/gi, '');
+    const inner = decoded.match(/url=([^&]+)/i);
+    if (inner && inner[1]) {
+        const innerDecoded = deepDecode(inner[1]);
+        const pfMatch2 = innerDecoded.match(/[?&]pfurl=([^&]+)/i);
+        if (pfMatch2 && pfMatch2[1]) {
+            return deepDecode(pfMatch2[1]);
+        }
+    }
 
-    const safariUrl = "x-safari://open?url=" + encodeURIComponent(decodedUrl);
+    const argMatch = decoded.match(/arg=([^&]+)/i);
+    if (argMatch && argMatch[1]) {
+        const innerArg = deepDecode(argMatch[1]);
+        const pfMatch3 = innerArg.match(/[?&]pfurl=([^&]+)/i);
+        if (pfMatch3 && pfMatch3[1]) {
+            return deepDecode(pfMatch3[1]);
+        }
+    }
+
+    return null;
+}
+
+const requestUrl = $request.url;
+const target = extractTargetUrl(requestUrl);
+
+if (target) {
+    let finalUrl = target.trim();
+
+    if (!/^https?:\/\//i.test(finalUrl)) {
+        finalUrl = "https://" + finalUrl.replace(/^\/+/, "");
+    }
+    finalUrl = finalUrl.replace(/(%2f|\/)+$/gi, '');
+
+    // const safariUrl = "x-safari://open?url=" + encodeURIComponent(finalUrl);
 
     $done({
         response: {
             status: 302,
-            headers: { Location: safariUrl }
+            headers: { Location: finalUrl }
         }
     });
 } else {
