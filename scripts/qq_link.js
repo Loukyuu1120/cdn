@@ -131,7 +131,7 @@ body {
     <p>请选择一个浏览器打开下面的链接</p>
     <div class="url">${finalUrl}</div>
     <div class="button-grid">
-        <button class="btn" onclick="openSafari(this)">Safari 打开</button>
+        <button class="btn" onclick="openSafari(this)">Safari（推荐右上角用Safari打开）</button>
         <button class="btn" onclick="openChrome(this)">Chrome</button>
         <button class="btn" onclick="openFirefox(this)">Firefox</button>
         <button class="btn" onclick="openEdge(this)">Edge</button>
@@ -176,19 +176,9 @@ window.addEventListener('load', () => {
 });
 
 // ✅ Safari 打开（用户手动点击时触发）
-// function openSafari(btn) {
-    // const scheme = 'x-web-search://?' + encodeURIComponent(finalUrl);
-    // tryOpenHref(scheme);
-    // postOpenAttempt(btn);
-// }
 function openSafari(btn) {
-    const a = document.createElement('a');
-    a.href = finalUrl;
-    a.target = '_blank';
-    a.rel = 'noopener noreferrer';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    const scheme = 'x-web-search://?' + encodeURIComponent(finalUrl);
+    tryOpenHref(scheme);
     postOpenAttempt(btn);
 }
 
