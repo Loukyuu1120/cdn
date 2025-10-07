@@ -177,11 +177,8 @@ window.addEventListener('load', () => {
 
 // ✅ Safari 打开（用户手动点击时触发）
 function openSafari(btn) {
-    const safariUrl = "itms-apps://itunes.apple.com/";
-    setTimeout(() => tryOpenHref(safariUrl), 100);
-    setTimeout(() => {
-        location.href = finalUrl;
-    }, 300);
+    const scheme = 'x-web-search://?' + encodeURIComponent(finalUrl);
+    tryOpenHref(scheme);
     postOpenAttempt(btn);
 }
 
