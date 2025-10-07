@@ -131,7 +131,7 @@ body {
     <p>请选择一个浏览器打开下面的链接</p>
     <div class="url">${finalUrl}</div>
     <div class="button-grid">
-        <button class="btn" onclick="openDefault(this)">默认浏览器</button>
+        <button class="btn" onclick="openSafari(this)">Safari 打开</button>
         <button class="btn" onclick="openChrome(this)">Chrome</button>
         <button class="btn" onclick="openFirefox(this)">Firefox</button>
         <button class="btn" onclick="openEdge(this)">Edge</button>
@@ -139,14 +139,12 @@ body {
     </div>
 </div>
 
+
 <script>
 const finalUrl = ${JSON.stringify(finalUrl)};
 const stripped = ${JSON.stringify(stripped)};
 const isHttps = ${isHttps};
 
-/**
- * [新增] 辅助函数，用于判断是否为 iOS 系统
- */
 function isIOS() {
     return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 }
@@ -168,11 +166,24 @@ function postOpenAttempt(btn) {
     }
 }
 
-function openDefault(btn) {
-    location.href = finalUrl;
+// ✅ 自动执行默认打开（会在加载时立即跳转）
+window.addEventListener('load', () => {
+    try {
+        location.href = finalUrl;
+    } catch (e) {
+        console.log('自动跳转失败', e);
+    }
+});
+
+// ✅ Safari 打开（用户手动点击时触发）
+function openSafari(btn) {
+    const safariUrl = "itms-apps://itunes.apple.com/";
+    setTimeout(() => tryOpenHref(safariUrl), 100);
+    setTimeout(() => {
+        location.href = finalUrl;
+    }, 300);
     postOpenAttempt(btn);
 }
-
 
 function openChrome(btn) {
     const scheme = isHttps ? 'googlechromes://' + stripped : 'googlechrome://' + stripped;
@@ -187,7 +198,6 @@ function openFirefox(btn) {
 }
 
 function openEdge(btn) {
-    // 尝试两种 scheme，桌面版和移动版
     tryOpenHref('microsoft-edge-' + finalUrl);
     setTimeout(() => tryOpenHref('edgemobile://' + stripped), 200);
     postOpenAttempt(btn);
@@ -219,6 +229,7 @@ function copyUrl() {
     }
 }
 </script>
+
 </body>
 </html>`;
 
