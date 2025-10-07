@@ -1,7 +1,7 @@
 /*
-QQ 跳转解码模块（增强选择版）
+QQ 跳转解码模块
 适用：Surge / Loon / Quantumult X
-功能：自动提取 c.pc.qq.com、pingtas.qq.com、connect.qq.com 等跳转真实目标链接
+功能：qq拦截的链接跳转真实目标链接
 特性：手动选择在指定浏览器或默认浏览器中打开，兼容 Chrome / Firefox / Edge 等，支持 iOS scheme
 */
 
@@ -144,6 +144,13 @@ const finalUrl = ${JSON.stringify(finalUrl)};
 const stripped = ${JSON.stringify(stripped)};
 const isHttps = ${isHttps};
 
+/**
+ * [新增] 辅助函数，用于判断是否为 iOS 系统
+ */
+function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}
+
 function tryOpenHref(url) {
     const a = document.createElement('a');
     a.href = url;
@@ -161,8 +168,15 @@ function postOpenAttempt(btn) {
     }
 }
 
+/**
+ * [修改] 此函数增加了对 iOS 的特殊处理
+ */
 function openDefault(btn) {
-    tryOpenHref(finalUrl);
+    if (isIOS()) {
+        window.open(finalUrl, '_blank');
+    } else {
+        tryOpenHref(finalUrl);
+    }
     postOpenAttempt(btn);
 }
 
