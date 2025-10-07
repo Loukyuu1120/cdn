@@ -182,8 +182,6 @@ function openSafari(btn) {
     postOpenAttempt(btn);
 }
 
-document.getElementById('safariBtn').addEventListener('click', openSafari);
-
 function openChrome(btn) {
     const scheme = isHttps ? 'googlechromes://' + stripped : 'googlechrome://' + stripped;
     tryOpenHref(scheme);
