@@ -176,11 +176,23 @@ window.addEventListener('load', () => {
 });
 
 // ✅ Safari 打开（用户手动点击时触发）
+// function openSafari(btn) {
+    // const scheme = 'x-web-search://?' + encodeURIComponent(finalUrl);
+    // tryOpenHref(scheme);
+    // postOpenAttempt(btn);
+// }
 function openSafari(btn) {
-    const scheme = 'x-web-search://?' + encodeURIComponent(finalUrl);
-    tryOpenHref(scheme);
+    const a = document.createElement('a');
+    a.href = finalUrl;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
     postOpenAttempt(btn);
 }
+
+document.getElementById('safariBtn').addEventListener('click', openSafari);
 
 function openChrome(btn) {
     const scheme = isHttps ? 'googlechromes://' + stripped : 'googlechrome://' + stripped;
