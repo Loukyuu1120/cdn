@@ -34,17 +34,9 @@ for (let re of rules) {
 
         decodedUrl = decodedUrl.replace(/(%2f|\/)+$/gi, '');
 
-        console.log(`[QQ跳转解码] 捕获链接 → ${decodedUrl}`);
-
-        $done({
-            response: {
-                status: 302,
-                headers: { Location: decodedUrl }
-            }
-        });
+        $done({ response: { status: 302, headers: { Location: "x-safari://open?url=" + encodeURIComponent(decodedUrl) } } });
         return;
     }
 }
 
-console.log('[QQ跳转解码] 未匹配规则');
 $done({});
