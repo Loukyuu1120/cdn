@@ -173,12 +173,19 @@ function postOpenAttempt(btn) {
  */
 function openDefault(btn) {
     if (isIOS()) {
-        window.open(finalUrl, '_blank');
+        const jumpUrl = `mqqapi://forward/url?url_prefix=${encodeURIComponent(finalUrl)}`;
+        const iframe = document.createElement("iframe");
+        iframe.style.display = "none";
+        iframe.src = jumpUrl;
+        document.body.appendChild(iframe);
+        setTimeout(() => document.body.removeChild(iframe), 2000);
     } else {
         tryOpenHref(finalUrl);
     }
+
     postOpenAttempt(btn);
 }
+
 
 function openChrome(btn) {
     const scheme = isHttps ? 'googlechromes://' + stripped : 'googlechrome://' + stripped;
