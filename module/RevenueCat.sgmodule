@@ -1,9 +1,8 @@
+#!name=RevenueCat
+#!desc=ddgksf2013
 [Script]
-http-response ^https:\/\/(api\.revenuecat\.com|api\.rc-backup\.com)\/.+\/(receipts$|subscribers\/[^/]+$) script-path=https://raw.githubusercontent.com/Yu9191/Rewrite/main/Revenuecat.js
-
-http-request ^https:\/\/(api\.revenuecat\.com|api\.rc-backup\.com)\/.+\/(receipts$|subscribers\/[^/]+$) script-path=https://raw.githubusercontent.com/Yu9191/Rewrite/main/Revenuecat.js
-
-url ^https:\/\/api\.lianjiu\.fun\/app\/api\/v1\/profile$ reject
+revenuecat-response = type=http-response,pattern=^https?:\/\/api\.(revenuecat|rc-backup)\.com\/(receipts$|subscribers\/[^\/]+$),requires-body=true,timeout=10,script-path=https://gist.githubusercontent.com/ddgksf2013/dbb1695cd96743eef18f3fac5c6fe227/raw/revenuecat.js
+revenuecat-request-header = type=http-request,pattern=^https?:\/\/api\.(revenuecat|rc-backup)\.com\/(receipts|subscribers),timeout=10,script-path=https://raw.githubusercontent.com/ddgksf2013/Scripts/master/deleteHeader.js
 
 [MITM]
-hostname = %APPEND% api.revenuecat.com, api.lianjiu.fun
+hostname = %APPEND% api.revenuecat.com, api.rc-backup.com
