@@ -26,14 +26,19 @@ function extractTargetUrl(rawUrl) {
     const pfMatch = decoded.match(/[?&]pfurl=([^&]+)/i);
     if (pfMatch && pfMatch[1]) return deepDecode(pfMatch[1]);
 
-    const inner = decoded.match(/url=([^&]+)/i);
+    const inner = decoded.match(/[?&]url=([^&]+)/i); // 修正正则，确保匹配参数名
     if (inner && inner[1]) {
         const innerDecoded = deepDecode(inner[1]);
+
         const pfMatch2 = innerDecoded.match(/[?&]pfurl=([^&]+)/i);
-        if (pfMatch2 && pfMatch2[1]) return deepDecode(pfMatch2[1]);
+        if (pfMatch2 && pfMatch2[1]) {
+            return deepDecode(pfMatch2[1]);
+        }
+
+        return innerDecoded;
     }
 
-    const argMatch = decoded.match(/arg=([^&]+)/i);
+    const argMatch = decoded.match(/[?&]arg=([^&]+)/i);
     if (argMatch && argMatch[1]) {
         const innerArg = deepDecode(argMatch[1]);
         const pfMatch3 = innerArg.match(/[?&]pfurl=([^&]+)/i);
